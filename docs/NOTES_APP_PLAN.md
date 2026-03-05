@@ -187,7 +187,7 @@ app/
 
 ### Phase 1 – Foundation
 
-- [ ] Data layer: define schema (Notes, Tasks, Templates, Schedules, NotificationSetting); choose DB (expo-sqlite or WatermelonDB) and implement CRUD.
+- [ ] Data layer: define schema (Notes, Tasks, Templates, Schedules, NotificationSetting); choose DB (supabse) and implement CRUD.
 - [ ] Notes list screen: list notes, open by id.
 - [ ] Single note screen: view/edit content and task list (no notifications yet).
 - [ ] Manual “new note” (and optionally “from template” as one-time copy).
