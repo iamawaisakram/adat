@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-
-import { Input, ScrollView, Stack, YStack } from 'tamagui';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Input, ScrollView, Stack, Text, YStack } from 'tamagui';
 
 import { TextArea } from '@/components/atoms';
 import { TaskList } from '@/components/organisms/task-list';
@@ -11,6 +11,7 @@ type NoteEditorProps = {
 };
 
 export function NoteEditor({ noteId }: NoteEditorProps) {
+  const insets = useSafeAreaInsets();
   const { data: note, isLoading } = useNote(noteId);
   const updateNote = useUpdateNote(noteId);
 
@@ -22,7 +23,7 @@ export function NoteEditor({ noteId }: NoteEditorProps) {
       setTitle(note.title);
       setContent(note.content);
     }
-  }, [note?.id, note?.title, note?.content]);
+  }, [note]);
 
   const handleTitleBlur = () => {
     if (note && title !== note.title) {
@@ -37,28 +38,52 @@ export function NoteEditor({ noteId }: NoteEditorProps) {
   };
 
   if (isLoading || !note) {
-    return <Stack flex={1} padding="$4"><Stack>Loading…</Stack></Stack>;
+    return (
+      <Stack flex={1} padding="$4" justifyContent="center" paddingTop={insets.top}>
+        <Text color="$gray10">Loading…</Text>
+      </Stack>
+    );
   }
 
   return (
-    <ScrollView flex={1} contentContainerStyle={{ padding: 16 }}>
+    <ScrollView
+      flex={1}
+      contentContainerStyle={{
+        paddingHorizontal: 20,
+        paddingTop: insets.top + 8,
+        paddingBottom: insets.bottom + 24,
+      }}
+      showsVerticalScrollIndicator={false}>
       <YStack gap="$4">
         <Input
           placeholder="Title"
           value={title}
           onChangeText={setTitle}
           onBlur={handleTitleBlur}
-          fontSize="$6"
-          fontWeight="600"
+          fontSize="$7"
+          fontWeight="700"
+          backgroundColor="$gray2"
+          borderColor="$borderColor"
+          borderRadius="$3"
+          padding="$3"
         />
         <TextArea
           placeholder="Content"
           value={content}
           onChangeText={setContent}
           onBlur={handleContentBlur}
-          minHeight={120}
+          minHeight={140}
+          backgroundColor="$gray2"
+          borderColor="$borderColor"
+          borderRadius="$3"
+          padding="$3"
         />
-        <TaskList noteId={noteId} />
+        <Stack marginTop="$2">
+          <Text fontSize="$4" fontWeight="600" color="$color" marginBottom="$2">
+            Tasks
+          </Text>
+          <TaskList noteId={noteId} />
+        </Stack>
       </YStack>
     </ScrollView>
   );

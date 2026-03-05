@@ -24,8 +24,12 @@ export function TaskRow({
   return (
     <XStack
       alignItems="center"
-      gap="$2"
-      paddingVertical="$2"
+      gap="$3"
+      paddingVertical="$2.5"
+      paddingHorizontal="$2"
+      borderRadius="$3"
+      backgroundColor="$gray2"
+      marginBottom="$2"
       onPress={onPress}
       cursor={onPress ? 'pointer' : undefined}>
       <Checkbox
@@ -41,10 +45,13 @@ export function TaskRow({
           onChangeText={onEditTitleChange}
           onBlur={onBlur}
           autoFocus
+          backgroundColor="$background"
+          borderRadius="$2"
         />
       ) : (
         <Text
           flex={1}
+          fontSize="$4"
           textDecorationLine={task.completed ? 'line-through' : 'none'}
           color={task.completed ? '$gray10' : '$color'}>
           {task.title || 'Untitled task'}

@@ -4,6 +4,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { TamaguiProvider } from 'tamagui';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
@@ -20,22 +21,32 @@ export default function RootLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme ?? 'light'}>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="note/[id]"
-              options={{ title: 'Note', headerShown: true }}
-            />
-            <Stack.Screen
-              name="note/new"
-              options={{ title: 'New note', headerShown: true }}
-            />
-          </Stack>
-          <StatusBar style="auto" />
-        </ThemeProvider>
-      </TamaguiProvider>
+      <SafeAreaProvider>
+        <TamaguiProvider
+          config={tamaguiConfig}
+          defaultTheme={colorScheme ?? "light"}
+        >
+          <ThemeProvider
+            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+          >
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen
+                name="note/[id]"
+                options={{ title: "Note", headerShown: true }}
+              />
+              <Stack.Screen
+                name="(modals)"
+                options={{
+                  presentation: 'modal',
+                  headerShown: false,
+                }}
+              />
+            </Stack>
+            <StatusBar style="auto" />
+          </ThemeProvider>
+        </TamaguiProvider>
+      </SafeAreaProvider>
     </QueryClientProvider>
   );
 }

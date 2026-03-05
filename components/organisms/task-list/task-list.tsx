@@ -5,7 +5,6 @@ import { Button, Stack, YStack } from 'tamagui';
 import { TaskRow } from '@/components/molecules';
 import {
   useCreateTask,
-  useDeleteTask,
   useNoteTasks,
   useUpdateTask,
 } from '@/hooks/use-note-tasks';
@@ -19,7 +18,6 @@ export function TaskList({ noteId }: TaskListProps) {
   const { data: tasks = [], isLoading } = useNoteTasks(noteId);
   const createTask = useCreateTask(noteId);
   const updateTask = useUpdateTask(noteId);
-  const deleteTask = useDeleteTask(noteId);
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState('');
@@ -47,9 +45,14 @@ export function TaskList({ noteId }: TaskListProps) {
   if (isLoading) return null;
 
   return (
-    <YStack gap="$1">
-      <Stack flexDirection="row" alignItems="center" marginBottom="$2">
-        <Button size="$2" onPress={handleAddTask} theme="green">
+    <YStack gap="$0">
+      <Stack flexDirection="row" alignItems="center" marginBottom="$3">
+        <Button
+          size="$3"
+          onPress={handleAddTask}
+          theme="green"
+          borderRadius="$3"
+          fontWeight="600">
           Add task
         </Button>
       </Stack>
