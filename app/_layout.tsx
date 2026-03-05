@@ -32,10 +32,6 @@ export default function RootLayout() {
               name="note/new"
               options={{ title: 'New note', headerShown: true }}
             />
-            <Stack.Screen
-              name="modal"
-              options={{ presentation: 'modal', title: 'Modal' }}
-            />
           </Stack>
           <StatusBar style="auto" />
         </ThemeProvider>
