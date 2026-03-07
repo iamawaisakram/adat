@@ -55,6 +55,36 @@ export interface TaskUpdate {
   sort_order?: number;
 }
 
+// Phase 3: Task notification settings
+
+export type NotificationSettingKind = 'daily' | 'specific';
+
+export interface NotificationSetting {
+  id: string;
+  task_id: string;
+  kind: NotificationSettingKind;
+  reminder_time: string;
+  day_of_week: number | null;
+  specific_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface NotificationSettingInsert {
+  task_id: string;
+  kind: NotificationSettingKind;
+  reminder_time: string;
+  day_of_week?: number | null;
+  specific_at?: string | null;
+}
+
+export interface NotificationSettingUpdate {
+  kind?: NotificationSettingKind;
+  reminder_time?: string;
+  day_of_week?: number | null;
+  specific_at?: string | null;
+}
+
 // Phase 2: Templates & Schedules
 
 export type ScheduleFrequency = 'daily' | 'weekly' | 'monthly' | 'yearly';

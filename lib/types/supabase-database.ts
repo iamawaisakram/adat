@@ -1,4 +1,4 @@
-import type { Note, Task, Template, Schedule } from './database';
+import type { Note, Task, Template, Schedule, NotificationSetting } from './database';
 
 export interface Database {
   public: {
@@ -38,6 +38,15 @@ export interface Database {
           updated_at?: string;
         };
         Update: Partial<Omit<Schedule, 'id' | 'created_at'>> & { updated_at?: string };
+      };
+      notification_settings: {
+        Row: NotificationSetting;
+        Insert: Omit<NotificationSetting, 'id' | 'created_at' | 'updated_at'> & {
+          id?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Omit<NotificationSetting, 'id' | 'created_at'>> & { updated_at?: string };
       };
     };
   };

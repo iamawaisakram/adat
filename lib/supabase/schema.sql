@@ -96,3 +96,24 @@ create trigger schedules_updated_at before update on public.schedules
 
 alter table public.notes add column if not exists schedule_id uuid references public.schedules(id) on delete set null;
 create unique index if not exists idx_notes_schedule_period on public.notes(schedule_id, period_key) where schedule_id is not null and period_key is not null;
+
+-- Phase 3: task notification settings (one per task)
+create table if not exists public.notification_settings (
+  id uuid primary key default gen_random_uuid(),
+  task_id uuid not null references public.tasks(id) on delete cascade,
+  kind text not null check (kind in ('daily', 'specific')),
+  reminder_time text not null,
+  day_of_week int check (day_of_week is null or (day_of_week >= 0 and day_of_week <= 6)),
+  specific_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique(task_id)
+);
+
+create index if not exists idx_notification_settings_task_id on public.notification_settings(task_id);
+
+alter table public.notification_settings enable row level security;
+create policy "Allow all for notification_settings" on public.notification_settings for all using (true) with check (true);
+
+create trigger notification_settings_updated_at before update on public.notification_settings
+  for each row execute function public.set_updated_at();

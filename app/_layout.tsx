@@ -10,6 +10,7 @@ import { TamaguiProvider } from 'tamagui';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { runAutoGenerateNotes } from '@/lib/auto-generate-notes';
+import { rescheduleAllTaskReminders } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 
 import tamaguiConfig from '../tamagui.config';
@@ -25,6 +26,10 @@ export default function RootLayout() {
     runAutoGenerateNotes().then(() => {
       void queryClient.invalidateQueries({ queryKey: ['notes'] });
     });
+  }, []);
+
+  useEffect(() => {
+    void rescheduleAllTaskReminders();
   }, []);
 
   return (

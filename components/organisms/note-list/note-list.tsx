@@ -1,16 +1,23 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
+import { RefreshControl } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button, ScrollView, Stack, Text, XStack, YStack } from 'tamagui';
 
 import { EmptyState, NoteCard } from '@/components/molecules';
 import { type NotesListFilter, useNotesList } from '@/hooks/use-notes';
+import { runAutoGenerateNotes } from '@/lib/auto-generate-notes';
 
 export function NoteList() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const [filter, setFilter] = useState<NotesListFilter>({ type: "all", period: "all" });
-  const { data: notes, isLoading, error } = useNotesList(filter);
+  const { data: notes, isLoading, error, refetch, isRefetching } = useNotesList(filter);
+
+  const onRefresh = async () => {
+    await runAutoGenerateNotes();
+    await refetch();
+  };
 
   if (error) {
     return (
@@ -55,6 +62,12 @@ export function NoteList() {
           paddingHorizontal: 20,
         }}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={onRefresh}
+          />
+        }
       >
         <XStack
           justifyContent="space-between"

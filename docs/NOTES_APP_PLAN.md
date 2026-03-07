@@ -198,12 +198,12 @@ app/
 - [x] Schedules CRUD: template, frequency, anchor (day/time).
 - [x] Auto-generation job: on app open, create missing notes for current period from each schedule; idempotent per period.
 
-### Phase 3 – Task Notifications
+### Phase 3 – Task Notifications ✅
 
-- [ ] expo-notifications: request permission; schedule local notifications.
-- [ ] Per-task notification settings: “Remind me” → daily at X or specific day/time; store with task.
-- [ ] UI: toggle notifications for one or multiple tasks per note; list of “reminded” tasks in note or in settings.
-- [ ] On app open: reschedule upcoming notifications from stored settings (within platform limits).
+- [x] expo-notifications: request permission; schedule local notifications.
+- [x] Per-task notification settings: “Remind me” → daily at X or specific day/time; store with task.
+- [x] UI: toggle notifications for one or multiple tasks per note; list of “reminded” tasks in note or in settings.
+- [x] On app open: reschedule upcoming notifications from stored settings (within platform limits).
 
 ### Phase 4 – Polish
 

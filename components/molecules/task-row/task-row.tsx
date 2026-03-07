@@ -1,4 +1,4 @@
-import { Checkbox, Input, Text, XStack } from 'tamagui';
+import { Checkbox, Input, Text, XStack, YStack } from 'tamagui';
 
 import type { Task } from '@/lib/types';
 
@@ -10,6 +10,8 @@ type TaskRowProps = {
   onBlur?: () => void;
   onToggleComplete?: () => void;
   onPress?: () => void;
+  onRemindPress?: () => void;
+  reminderLabel?: string | null;
 };
 
 export function TaskRow({
@@ -20,6 +22,8 @@ export function TaskRow({
   onBlur,
   onToggleComplete,
   onPress,
+  onRemindPress,
+  reminderLabel,
 }: TaskRowProps) {
   return (
     <XStack
@@ -37,24 +41,41 @@ export function TaskRow({
         checked={task.completed}
         onCheckedChange={onToggleComplete}
       />
-      {isEditing ? (
-        <Input
-          flex={1}
-          size="$3"
-          value={editTitle}
-          onChangeText={onEditTitleChange}
-          onBlur={onBlur}
-          autoFocus
-          backgroundColor="$background"
-          borderRadius="$2"
-        />
-      ) : (
+      <YStack flex={1} gap="$0">
+        {isEditing ? (
+          <Input
+            size="$3"
+            value={editTitle}
+            onChangeText={onEditTitleChange}
+            onBlur={onBlur}
+            autoFocus
+            backgroundColor="$background"
+            borderRadius="$2"
+          />
+        ) : (
+          <Text
+            fontSize="$4"
+            textDecorationLine={task.completed ? 'line-through' : 'none'}
+            color={task.completed ? '$gray10' : '$color'}>
+            {task.title || 'Untitled task'}
+          </Text>
+        )}
+        {reminderLabel && (
+          <Text fontSize="$2" color="$gray10">
+            Remind: {reminderLabel}
+          </Text>
+        )}
+      </YStack>
+      {onRemindPress && (
         <Text
-          flex={1}
           fontSize="$4"
-          textDecorationLine={task.completed ? 'line-through' : 'none'}
-          color={task.completed ? '$gray10' : '$color'}>
-          {task.title || 'Untitled task'}
+          onPress={(e) => {
+            e?.stopPropagation?.();
+            onRemindPress();
+          }}
+          color={reminderLabel ? '$blue10' : '$gray10'}
+          cursor="pointer">
+          {reminderLabel ? '🔔' : '⏰'}
         </Text>
       )}
     </XStack>

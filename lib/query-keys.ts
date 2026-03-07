@@ -18,4 +18,8 @@ export const queryKeys = {
     list: () => [...queryKeys.schedules.all, 'list'] as const,
     detail: (id: string) => [...queryKeys.schedules.all, 'detail', id] as const,
   },
+  notificationSettings: {
+    all: ['notificationSettings'] as const,
+    byTask: (taskId: string) => [...queryKeys.notificationSettings.all, 'task', taskId] as const,
+  },
 } as const;

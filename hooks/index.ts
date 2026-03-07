@@ -26,3 +26,9 @@ export {
   useUpdateSchedule,
   useDeleteSchedule,
 } from './use-schedules';
+export {
+  useNotificationSettingForTask,
+  useNotificationSettingsForTasks,
+  useUpsertNotificationSetting,
+  useDeleteNotificationSetting,
+} from './use-notification-settings';
