@@ -102,6 +102,7 @@ function getISOWeek(date: Date): string {
 /**
  * Run auto-generation: for each enabled schedule, ensure a note exists for the current period.
  * Idempotent: one note per (schedule_id, period_key).
+ * Only creates notes for the current period (no backfill of past periods).
  */
 export async function runAutoGenerateNotes(): Promise<void> {
   const now = new Date();

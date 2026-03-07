@@ -13,6 +13,8 @@ type ReminderModalProps = {
   noteId: string;
   taskTitle: string;
   currentSetting: NotificationSetting | null;
+  /** Default time for new daily reminders (e.g. 09:00). */
+  defaultDailyTime?: string;
   onUpsert: (input: {
     kind: NotificationSettingKind;
     reminder_time: string;
@@ -27,6 +29,7 @@ export function ReminderModal({
   noteId,
   taskTitle,
   currentSetting,
+  defaultDailyTime = '09:00',
   onUpsert,
   onDelete,
   onClose,
@@ -34,7 +37,9 @@ export function ReminderModal({
   const [kind, setKind] = useState<NotificationSettingKind>(
     currentSetting?.kind ?? 'daily'
   );
-  const [time, setTime] = useState(currentSetting?.reminder_time ?? '09:00');
+  const [time, setTime] = useState(
+    currentSetting?.reminder_time ?? defaultDailyTime
+  );
   const [specificAt, setSpecificAt] = useState(
     currentSetting?.specific_at
       ? new Date(currentSetting.specific_at).toISOString().slice(0, 16)
@@ -118,7 +123,7 @@ export function ReminderModal({
         {kind === 'daily' && (
           <Stack>
             <Text fontSize="$2" color="$gray11" marginBottom="$1">
-              Time (e.g. 09:00)
+              Time (e.g. 09:00) — uses your device’s local time
             </Text>
             <Input
               value={time}

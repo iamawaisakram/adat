@@ -14,6 +14,7 @@ import {
   useUpsertNotificationSetting,
   useDeleteNotificationSetting,
 } from '@/hooks/use-notification-settings';
+import { useDefaultReminderTime } from '@/hooks/use-settings';
 import type { Task } from '@/lib/types';
 
 import { ReminderModal } from './reminder-modal';
@@ -33,11 +34,13 @@ export function TaskList({ noteId }: TaskListProps) {
   const { data: tasks = [], isLoading } = useNoteTasks(noteId);
   const taskIds = tasks.map((t) => t.id);
   const { data: settingsMap = {} } = useNotificationSettingsForTasks(taskIds);
+  const { defaultReminderTime } = useDefaultReminderTime();
   const createTask = useCreateTask(noteId);
   const updateTask = useUpdateTask(noteId);
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState('');
+  const [editDueAt, setEditDueAt] = useState('');
   const [reminderTaskId, setReminderTaskId] = useState<string | null>(null);
 
   const reminderTask = reminderTaskId ? tasks.find((t) => t.id === reminderTaskId) : null;
@@ -51,11 +54,19 @@ export function TaskList({ noteId }: TaskListProps) {
   const handleStartEdit = (task: Task) => {
     setEditingId(task.id);
     setEditTitle(task.title);
+    setEditDueAt(
+      task.due_at ? new Date(task.due_at).toISOString().slice(0, 16) : ''
+    );
   };
 
   const handleSaveEdit = () => {
     if (editingId && editTitle.trim() !== '') {
-      updateTask.mutate({ id: editingId, title: editTitle.trim() });
+      const dueValue = editDueAt.trim();
+      updateTask.mutate({
+        id: editingId,
+        title: editTitle.trim(),
+        due_at: dueValue ? dueValue : null,
+      });
     }
     setEditingId(null);
   };
@@ -84,7 +95,9 @@ export function TaskList({ noteId }: TaskListProps) {
           task={task}
           isEditing={editingId === task.id}
           editTitle={editTitle}
+          editDueAt={editDueAt}
           onEditTitleChange={setEditTitle}
+          onEditDueAtChange={setEditDueAt}
           onBlur={handleSaveEdit}
           onToggleComplete={() => handleToggle(task)}
           onPress={() => handleStartEdit(task)}
@@ -104,6 +117,7 @@ export function TaskList({ noteId }: TaskListProps) {
               noteId={noteId}
               taskTitle={reminderTask.title}
               currentSetting={settingsMap[reminderTask.id] ?? null}
+              defaultDailyTime={defaultReminderTime}
               onUpsert={async (input) => {
                 await upsertSetting.mutateAsync(input);
               }}

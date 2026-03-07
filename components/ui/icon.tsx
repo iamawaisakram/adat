@@ -2,6 +2,7 @@ import {
   CalendarIcon,
   DocTextIcon,
   NotesIcon,
+  SettingsIcon,
   TemplateIcon,
 } from '@/components/ui/icons';
 
@@ -11,6 +12,7 @@ export const iconNames = [
   'notes',
   'template',
   'calendar',
+  'settings',
 ] as const;
 
 export type IconName = (typeof iconNames)[number];
@@ -34,6 +36,8 @@ export function Icon({ name, size = 24, color = 'currentColor' }: IconProps) {
       return <TemplateIcon {...common} />;
     case 'calendar':
       return <CalendarIcon {...common} />;
+    case 'settings':
+      return <SettingsIcon {...common} />;
     default:
       return <DocTextIcon {...common} />;
   }

@@ -205,11 +205,11 @@ app/
 - [x] UI: toggle notifications for one or multiple tasks per note; list of “reminded” tasks in note or in settings.
 - [x] On app open: reschedule upcoming notifications from stored settings (within platform limits).
 
-### Phase 4 – Polish
+### Phase 4 – Polish ✅
 
-- [ ] Rich note content (e.g. markdown renderer), better task UX (due dates, subtasks if needed).
-- [ ] Settings: default reminder time, notification permission prompt, about.
-- [ ] Edge cases: timezone for “daily at 9am”, handling past periods for schedules.
+- [x] Rich note content (e.g. markdown renderer), better task UX (due dates, subtasks if needed).
+- [x] Settings: default reminder time, notification permission prompt, about.
+- [x] Edge cases: timezone for “daily at 9am”, handling past periods for schedules.
 
 ### Phase 5 – Home Screen Widgets
 

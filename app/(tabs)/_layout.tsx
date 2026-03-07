@@ -27,6 +27,10 @@ export default function TabLayout() {
         name="schedules"
         options={{ title: 'Schedules', tabBarIcon: tabIcon('calendar') }}
       />
+      <Tabs.Screen
+        name="settings"
+        options={{ title: 'Settings', tabBarIcon: tabIcon('settings') }}
+      />
     </Tabs>
   );
 }
