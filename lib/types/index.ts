@@ -6,5 +6,12 @@ export type {
   TaskInsert,
   TaskUpdate,
   NoteType,
+  Template,
+  Schedule,
+  TemplateInsert,
+  TemplateUpdate,
+  ScheduleInsert,
+  ScheduleUpdate,
+  ScheduleFrequency,
 } from './database';
 export type { Database } from './supabase-database';

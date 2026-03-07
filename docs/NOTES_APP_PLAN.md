@@ -6,12 +6,12 @@ Notes app with tasks, templates, auto-generated notes (daily/weekly/monthly/year
 
 ## 1. Core Concepts
 
-| Concept | Description |
-|--------|-------------|
-| **Note** | A single note (e.g. "March 2025", "Week of 3 Mar"). Can be manual or auto-generated. Contains **content** (rich text / markdown) and **tasks**. |
-| **Task** | A to-do item inside a note. Has title, optional due date/time, completion state, and optional **notification settings** (when to remind the user). |
-| **Template** | Reusable note structure (title pattern + body template). User creates templates; they are used when auto-generating notes. |
-| **Schedule** | Rule for auto-generation: frequency (daily/weekly/monthly/yearly), anchor (e.g. Monday for weekly, 1st for monthly), and which template to use. |
+| Concept      | Description                                                                                                                                        |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Note**     | A single note (e.g. "March 2025", "Week of 3 Mar"). Can be manual or auto-generated. Contains **content** (rich text / markdown) and **tasks**.    |
+| **Task**     | A to-do item inside a note. Has title, optional due date/time, completion state, and optional **notification settings** (when to remind the user). |
+| **Template** | Reusable note structure (title pattern + body template). User creates templates; they are used when auto-generating notes.                         |
+| **Schedule** | Rule for auto-generation: frequency (daily/weekly/monthly/yearly), anchor (e.g. Monday for weekly, 1st for monthly), and which template to use.    |
 
 ---
 
@@ -133,18 +133,18 @@ WidgetConfig (single record or keyed by widget kind; stored in DB or AsyncStorag
 
 ## 8. Tech Stack (Aligned with Current Project)
 
-| Layer | Choice | Notes |
-|-------|--------|--------|
-| App | Existing Expo 54 + expo-router | Keep current structure. |
-| UI | **Tamagui** | Components, theming, responsive layout. |
-| State (client) | **Zustand** | UI state (modals, widget config, focus list). |
-| State (server) | **React Query** | Server state; Supabase as backend. |
-| Backend | **Supabase** | Auth, DB (PostgREST), optional Realtime. |
-| Storage | Local-first (or Supabase-first) | Supabase for persisted data; local cache via React Query. |
-| Notifications | expo-notifications | Local scheduled notifications; request permissions on first “Remind me” use. |
-| Background | expo-task-manager (optional) | For “create note at midnight” or rescheduling notifications; fallback: do generation on app open. |
-| Widgets | expo-widgets (iOS) / native (Android) | Home screen widgets: focused tasks + single note; shared storage (App Groups / DB) for widget payload. |
-| Sync (future) | Optional | Supabase can cover sync when needed. |
+| Layer          | Choice                                | Notes                                                                                                  |
+| -------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| App            | Existing Expo 54 + expo-router        | Keep current structure.                                                                                |
+| UI             | **Tamagui**                           | Components, theming, responsive layout.                                                                |
+| State (client) | **Zustand**                           | UI state (modals, widget config, focus list).                                                          |
+| State (server) | **React Query**                       | Server state; Supabase as backend.                                                                     |
+| Backend        | **Supabase**                          | Auth, DB (PostgREST), optional Realtime.                                                               |
+| Storage        | Local-first (or Supabase-first)       | Supabase for persisted data; local cache via React Query.                                              |
+| Notifications  | expo-notifications                    | Local scheduled notifications; request permissions on first “Remind me” use.                           |
+| Background     | expo-task-manager (optional)          | For “create note at midnight” or rescheduling notifications; fallback: do generation on app open.      |
+| Widgets        | expo-widgets (iOS) / native (Android) | Home screen widgets: focused tasks + single note; shared storage (App Groups / DB) for widget payload. |
+| Sync (future)  | Optional                              | Supabase can cover sync when needed.                                                                   |
 
 **Code structure & conventions** (file naming, Atomic Design, hook placement): see [docs/architecture.md](architecture.md).
 
@@ -185,18 +185,18 @@ app/
 
 ## 10. Implementation Phases
 
-### Phase 1 – Foundation
+### Phase 1 – Foundation ✅
 
-- [ ] Data layer: define schema (Notes, Tasks, Templates, Schedules, NotificationSetting); choose DB (supabse) and implement CRUD.
-- [ ] Notes list screen: list notes, open by id.
-- [ ] Single note screen: view/edit content and task list (no notifications yet).
-- [ ] Manual “new note” (and optionally “from template” as one-time copy).
+- [x] Data layer: define schema (Notes, Tasks, Templates, Schedules, NotificationSetting); choose DB (supabase) and implement CRUD.
+- [x] Notes list screen: list notes, open by id.
+- [x] Single note screen: view/edit content and task list (no notifications yet).
+- [x] Manual “new note” (and optionally “from template” as one-time copy).
 
-### Phase 2 – Templates & Schedules
+### Phase 2 – Templates & Schedules ✅
 
-- [ ] Templates CRUD: name, title pattern, body template (with placeholders).
-- [ ] Schedules CRUD: template, frequency, anchor (day/time).
-- [ ] Auto-generation job: on app open (and optionally background), create missing notes for current period from each schedule; idempotent per period.
+- [x] Templates CRUD: name, title pattern, body template (with placeholders).
+- [x] Schedules CRUD: template, frequency, anchor (day/time).
+- [x] Auto-generation job: on app open, create missing notes for current period from each schedule; idempotent per period.
 
 ### Phase 3 – Task Notifications
 

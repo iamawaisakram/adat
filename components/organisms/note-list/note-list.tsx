@@ -1,14 +1,16 @@
-import { useRouter } from "expo-router";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Button, ScrollView, Stack, Text, XStack, YStack } from "tamagui";
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Button, ScrollView, Stack, Text, XStack, YStack } from 'tamagui';
 
-import { EmptyState, NoteCard } from "@/components/molecules";
-import { useNotesList } from "@/hooks/use-notes";
+import { EmptyState, NoteCard } from '@/components/molecules';
+import { type NotesListFilter, useNotesList } from '@/hooks/use-notes';
 
 export function NoteList() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { data: notes, isLoading, error } = useNotesList();
+  const [filter, setFilter] = useState<NotesListFilter>({ type: "all", period: "all" });
+  const { data: notes, isLoading, error } = useNotesList(filter);
 
   if (error) {
     return (
@@ -57,7 +59,7 @@ export function NoteList() {
         <XStack
           justifyContent="space-between"
           alignItems="center"
-          marginBottom="$4"
+          marginBottom="$3"
         >
           <Text fontSize="$7" fontWeight="800" color="$color">
             Notes
@@ -71,6 +73,41 @@ export function NoteList() {
           >
             New Note
           </Button>
+        </XStack>
+        <XStack marginBottom="$3" gap="$2" flexWrap="wrap">
+          <Text fontSize="$3" color="$gray11" alignSelf="center">
+            Type:
+          </Text>
+          {(['all', 'manual', 'auto'] as const).map((t) => (
+            <Button
+              key={t}
+              size="$2"
+              theme={filter.type === t ? 'blue' : 'gray'}
+              borderRadius="$3"
+              onPress={() => setFilter((f) => ({ ...f, type: t }))}
+            >
+              {t === 'all' && 'All'}
+              {t === 'manual' && 'Manual'}
+              {t === 'auto' && 'Auto'}
+            </Button>
+          ))}
+          <Text fontSize="$3" color="$gray11" alignSelf="center" marginLeft="$2">
+            Period:
+          </Text>
+          {(['all', 'week', 'month', 'year'] as const).map((p) => (
+            <Button
+              key={p}
+              size="$2"
+              theme={filter.period === p ? 'blue' : 'gray'}
+              borderRadius="$3"
+              onPress={() => setFilter((f) => ({ ...f, period: p }))}
+            >
+              {p === 'all' && 'All'}
+              {p === 'week' && 'This week'}
+              {p === 'month' && 'This month'}
+              {p === 'year' && 'This year'}
+            </Button>
+          ))}
         </XStack>
         {hasNotes ? (
           <YStack gap="$3">

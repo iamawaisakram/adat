@@ -51,3 +51,48 @@ create trigger notes_updated_at before update on public.notes
   for each row execute function public.set_updated_at();
 create trigger tasks_updated_at before update on public.tasks
   for each row execute function public.set_updated_at();
+
+-- Phase 2: templates and schedules
+
+-- Templates (reusable note structure: title pattern + body template)
+create table if not exists public.templates (
+  id uuid primary key default gen_random_uuid(),
+  name text not null default '',
+  title_pattern text not null default '',
+  body_template text not null default '',
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+-- Schedules (auto-generation rules: frequency + anchor + template)
+create table if not exists public.schedules (
+  id uuid primary key default gen_random_uuid(),
+  template_id uuid not null references public.templates(id) on delete restrict,
+  frequency text not null check (frequency in ('daily', 'weekly', 'monthly', 'yearly')),
+  enabled boolean not null default true,
+  -- anchor: depends on frequency
+  anchor_time text,
+  anchor_day_of_week int check (anchor_day_of_week is null or (anchor_day_of_week >= 0 and anchor_day_of_week <= 6)),
+  anchor_day_of_month int check (anchor_day_of_month is null or (anchor_day_of_month >= 1 and anchor_day_of_month <= 31)),
+  anchor_month int check (anchor_month is null or (anchor_month >= 1 and anchor_month <= 12)),
+  anchor_day int check (anchor_day is null or (anchor_day >= 1 and anchor_day <= 31)),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists idx_schedules_template_id on public.schedules(template_id);
+create index if not exists idx_schedules_enabled on public.schedules(enabled) where enabled = true;
+
+alter table public.templates enable row level security;
+alter table public.schedules enable row level security;
+
+create policy "Allow all for templates" on public.templates for all using (true) with check (true);
+create policy "Allow all for schedules" on public.schedules for all using (true) with check (true);
+
+create trigger templates_updated_at before update on public.templates
+  for each row execute function public.set_updated_at();
+create trigger schedules_updated_at before update on public.schedules
+  for each row execute function public.set_updated_at();
+
+alter table public.notes add column if not exists schedule_id uuid references public.schedules(id) on delete set null;
+create unique index if not exists idx_notes_schedule_period on public.notes(schedule_id, period_key) where schedule_id is not null and period_key is not null;

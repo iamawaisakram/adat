@@ -1,6 +1,6 @@
 import { Stack, Text, useTheme, YStack } from 'tamagui';
 
-import { IconSymbol } from '@/components/ui/icon-symbol';
+import { Icon } from '@/components/ui/icon';
 
 type EmptyStateProps = {
   title: string;
@@ -32,7 +32,7 @@ export function EmptyState({
         backgroundColor="$gray3"
         justifyContent="center"
         alignItems="center">
-        <IconSymbol
+        <Icon
           name={icon}
           size={56}
           color={iconColor}
