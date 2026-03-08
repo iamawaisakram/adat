@@ -1,12 +1,12 @@
 {
   "name": "adat",
-  "main": "expo-router/entry",
+  "main": "index.js",
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "lint": "expo lint"
   },
@@ -33,9 +33,12 @@
     "expo-symbols": "~55.0.5",
     "expo-system-ui": "~55.0.9",
     "expo-web-browser": "~55.0.9",
+    "expo-widgets": "~55.0.0",
+    "@expo/ui": "~55.0.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-native": "0.83.2",
+    "react-native-android-widget": "^0.20.0",
     "react-native-gesture-handler": "~2.30.0",
     "react-native-markdown-display": "^7.0.2",
     "react-native-reanimated": "4.2.1",

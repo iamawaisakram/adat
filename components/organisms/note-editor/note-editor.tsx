@@ -6,6 +6,8 @@ import { Input, Button, ScrollView, Stack, Text, YStack } from 'tamagui';
 import { TextArea } from '@/components/atoms';
 import { TaskList } from '@/components/organisms/task-list';
 import { useNote, useUpdateNote } from '@/hooks/use-notes';
+import { useWidgetConfig } from '@/hooks/use-widget-config';
+import { refreshWidgets } from '@/lib/refresh-widgets';
 
 type NoteEditorProps = {
   noteId: string;
@@ -15,6 +17,13 @@ export function NoteEditor({ noteId }: NoteEditorProps) {
   const insets = useSafeAreaInsets();
   const { data: note, isLoading } = useNote(noteId);
   const updateNote = useUpdateNote(noteId);
+  const { noteWidgetNoteId, setNoteWidgetNoteId } = useWidgetConfig();
+
+  const isThisNoteOnWidget = noteWidgetNoteId === noteId;
+  const handleWidgetNotePress = () => {
+    const next = isThisNoteOnWidget ? null : noteId;
+    setNoteWidgetNoteId(next).then(() => refreshWidgets().catch(() => {}));
+  };
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -117,8 +126,25 @@ export function NoteEditor({ noteId }: NoteEditorProps) {
           </Stack>
         )}
         <Stack marginTop="$2">
+          <Text fontSize="$3" color="$gray11" marginBottom="$1">
+            Widgets
+          </Text>
+          <Button
+            size="$2"
+            theme={isThisNoteOnWidget ? 'green' : 'gray'}
+            borderRadius="$3"
+            onPress={handleWidgetNotePress}>
+            {isThisNoteOnWidget
+              ? 'Shown on home screen widget'
+              : 'Show this note on widget'}
+          </Button>
+        </Stack>
+        <Stack marginTop="$2">
           <Text fontSize="$4" fontWeight="600" color="$color" marginBottom="$2">
             Tasks
+          </Text>
+          <Text fontSize="$2" color="$gray11" marginBottom="$1">
+            ☆ = add to Focused tasks widget
           </Text>
           <TaskList noteId={noteId} />
         </Stack>

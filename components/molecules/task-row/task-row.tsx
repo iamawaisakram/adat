@@ -21,6 +21,8 @@ type TaskRowProps = {
   onToggleComplete?: () => void;
   onPress?: () => void;
   onRemindPress?: () => void;
+  onFocusPress?: () => void;
+  isFocused?: boolean;
   reminderLabel?: string | null;
 };
 
@@ -35,6 +37,8 @@ export function TaskRow({
   onToggleComplete,
   onPress,
   onRemindPress,
+  onFocusPress,
+  isFocused = false,
   reminderLabel,
 }: TaskRowProps) {
   const dueLabel = formatDueAt(task.due_at);
@@ -98,6 +102,18 @@ export function TaskRow({
           </>
         )}
       </YStack>
+      {onFocusPress && (
+        <Text
+          fontSize="$4"
+          onPress={(e) => {
+            e?.stopPropagation?.();
+            onFocusPress();
+          }}
+          color={isFocused ? '$yellow10' : '$gray10'}
+          cursor="pointer">
+          {isFocused ? '★' : '☆'}
+        </Text>
+      )}
       {onRemindPress && (
         <Text
           fontSize="$4"

@@ -22,7 +22,6 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.iamawaismughal.adat"
     },
@@ -42,6 +41,53 @@
           "dark": {
             "backgroundColor": "#000000"
           }
+        }
+      ],
+      [
+        "expo-widgets",
+        {
+          "groupIdentifier": "group.com.iamawaismughal.adat",
+          "widgets": [
+            {
+              "name": "FocusedTasksWidget",
+              "displayName": "Focused tasks",
+              "description": "Tasks you’re focusing on from your notes",
+              "supportedFamilies": ["systemSmall", "systemMedium", "systemLarge"]
+            },
+            {
+              "name": "NoteWidget",
+              "displayName": "Note",
+              "description": "A note you chose for your home screen",
+              "supportedFamilies": ["systemSmall", "systemMedium", "systemLarge"]
+            }
+          ]
+        }
+      ],
+      [
+        "react-native-android-widget",
+        {
+          "widgets": [
+            {
+              "name": "FocusedTasks",
+              "label": "Focused tasks",
+              "minWidth": "180dp",
+              "minHeight": "110dp",
+              "targetCellWidth": 4,
+              "targetCellHeight": 2,
+              "description": "Tasks you're focusing on from your notes",
+              "updatePeriodMillis": 1800000
+            },
+            {
+              "name": "Note",
+              "label": "Note",
+              "minWidth": "180dp",
+              "minHeight": "110dp",
+              "targetCellWidth": 4,
+              "targetCellHeight": 2,
+              "description": "A note you chose for your home screen",
+              "updatePeriodMillis": 1800000
+            }
+          ]
         }
       ]
     ],

@@ -4,7 +4,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button, Input, ScrollView, Text, YStack } from 'tamagui';
 
 import { useDefaultReminderTime } from '@/hooks/use-settings';
+import { useWidgetConfig } from '@/hooks/use-widget-config';
 import { requestNotificationPermission } from '@/lib/notifications';
+import { refreshWidgets } from '@/lib/refresh-widgets';
 import { getPermissionsAsync } from 'expo-notifications/build/NotificationPermissions';
 import Constants from 'expo-constants';
 
@@ -19,6 +21,8 @@ export default function SettingsScreen() {
   const [notificationStatus, setNotificationStatus] = useState<
     'granted' | 'denied' | 'undetermined' | null
   >(null);
+  const { focusedTaskIds, noteWidgetNoteId, loaded: widgetConfigLoaded } =
+    useWidgetConfig();
 
   useEffect(() => {
     getPermissionsAsync().then(({ status }) => setNotificationStatus(status));
@@ -98,6 +102,29 @@ export default function SettingsScreen() {
             {notificationStatus === 'granted'
               ? 'Open notification settings'
               : 'Allow notifications'}
+          </Button>
+        </YStack>
+
+        <YStack gap="$2">
+          <Text fontSize="$4" fontWeight="600" color="$color">
+            Home screen widgets
+          </Text>
+          <Text fontSize="$2" color="$gray11">
+            Add the “Focused tasks” or “Note” widget from your home screen. In a
+            note, use ☆ on a task to focus it; use “Show this note on widget” to
+            set the Note widget.
+          </Text>
+          {widgetConfigLoaded && (
+            <Text fontSize="$3" color="$gray10">
+              Focused: {focusedTaskIds.length} task(s). Note widget:{' '}
+              {noteWidgetNoteId ? 'set' : 'not set'}
+            </Text>
+          )}
+          <Button
+            theme="gray"
+            borderRadius="$3"
+            onPress={() => refreshWidgets().catch(() => {})}>
+            Refresh widgets
           </Button>
         </YStack>
 

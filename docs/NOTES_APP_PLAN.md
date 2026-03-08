@@ -211,12 +211,12 @@ app/
 - [x] Settings: default reminder time, notification permission prompt, about.
 - [x] Edge cases: timezone for “daily at 9am”, handling past periods for schedules.
 
-### Phase 5 – Home Screen Widgets
+### Phase 5 – Home Screen Widgets ✅
 
-- [ ] **Widget config in app** – Persist `focusedTaskIds` and `noteWidgetNoteId` (WidgetConfig); UI to add/remove tasks from “focus” list and to pick the note for the note widget (e.g. from note screen or Settings → Widgets).
-- [ ] **Shared payload** – On launch and when config changes, write widget payload (focused tasks list, selected note snippet + tasks) to App Groups (iOS) / shared storage (Android); trigger widget timeline refresh.
-- [ ] **Widget 1 – Focused tasks** – Implement “Focused tasks” widget (iOS with expo-widgets or native extension; Android with native widget). Read payload; show task list; deep-link tap to `note/[noteId]`. Support small/medium/large if applicable.
-- [ ] **Widget 2 – Note** – Implement “Note” widget. Read payload for selected note; show title + content snippet and/or tasks; deep-link tap to `note/[noteId]`. Support sizes.
+- [x] **Widget config in app** – Persist `focusedTaskIds` and `noteWidgetNoteId` (WidgetConfig); UI to add/remove tasks from “focus” list and to pick the note for the note widget (e.g. from note screen or Settings → Widgets).
+- [x] **Shared payload** – On launch and when config changes, write widget payload (focused tasks list, selected note snippet + tasks) to App Groups (iOS) / shared storage (Android); trigger widget timeline refresh.
+- [x] **Widget 1 – Focused tasks** – Implement “Focused tasks” widget (iOS with expo-widgets or native extension; Android with native widget). Read payload; show task list; deep-link tap to `note/[noteId]`. Support small/medium/large if applicable.
+- [x] **Widget 2 – Note** – Implement “Note” widget. Read payload for selected note; show title + content snippet and/or tasks; deep-link tap to `note/[noteId]`. Support sizes.
 
 ---
 

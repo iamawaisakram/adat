@@ -15,6 +15,8 @@ import {
   useDeleteNotificationSetting,
 } from '@/hooks/use-notification-settings';
 import { useDefaultReminderTime } from '@/hooks/use-settings';
+import { useWidgetConfig } from '@/hooks/use-widget-config';
+import { refreshWidgets } from '@/lib/refresh-widgets';
 import type { Task } from '@/lib/types';
 
 import { ReminderModal } from './reminder-modal';
@@ -35,8 +37,13 @@ export function TaskList({ noteId }: TaskListProps) {
   const taskIds = tasks.map((t) => t.id);
   const { data: settingsMap = {} } = useNotificationSettingsForTasks(taskIds);
   const { defaultReminderTime } = useDefaultReminderTime();
+  const { toggleFocusedTask, isTaskFocused } = useWidgetConfig();
   const createTask = useCreateTask(noteId);
   const updateTask = useUpdateTask(noteId);
+
+  const handleFocusPress = (taskId: string) => {
+    toggleFocusedTask(taskId).then(() => refreshWidgets().catch(() => {}));
+  };
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState('');
@@ -65,7 +72,7 @@ export function TaskList({ noteId }: TaskListProps) {
       updateTask.mutate({
         id: editingId,
         title: editTitle.trim(),
-        due_at: dueValue ? dueValue : null,
+        due_at: dueValue || null,
       });
     }
     setEditingId(null);
@@ -101,6 +108,8 @@ export function TaskList({ noteId }: TaskListProps) {
           onBlur={handleSaveEdit}
           onToggleComplete={() => handleToggle(task)}
           onPress={() => handleStartEdit(task)}
+          onFocusPress={() => handleFocusPress(task.id)}
+          isFocused={isTaskFocused(task.id)}
           onRemindPress={() => setReminderTaskId(task.id)}
           reminderLabel={reminderLabel(settingsMap[task.id] ?? null)}
         />
